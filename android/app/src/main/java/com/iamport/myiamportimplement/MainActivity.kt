@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         // SDK 에 결제 요청할 데이터
         val request = IamPortRequest(
             pg = PG.html5_inicis.makePgRawName(""),         // PG사
-            pay_method = PayMethod.card,                    // 결제수단
+            pay_method = PayMethod.card.name,                    // 결제수단
             name = "아임포트 진짜 쉬워요!",                      // 주문명
             merchant_uid = "sample_aos_${Date().time}",     // 주문번호
             amount = "1000",                                // 결제금액
@@ -54,10 +54,11 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "아임포트에서 결제 해볼까요?", Snackbar.LENGTH_LONG)
                 .setAction("결제") {
-
+                    val userCode = "iamport"
                     Log.d("하이", "결제시작인데?")
+                    Iamport.close()
                     // 아임포트 SDK 에 결제 요청하기
-                    Iamport.payment("iamport", request, paymentResultCallback = {
+                    Iamport.payment(userCode, iamPortRequest = request, paymentResultCallback = {
                         // 결제 완료 후 결과 콜백
                         Toast.makeText(this, "결제결과 => $it", Toast.LENGTH_LONG).show()
                     })
